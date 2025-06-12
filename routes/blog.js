@@ -10,6 +10,12 @@ const upload = require("../app/utils/imageUploader")
 
 router.post("/create-blog",authenticateUser,  upload.single("image"), controller.createBlog)
 
+router.get("/get-all-blogs", controller.getAllBlogs)
 
+router.get("/get-blog/:blogId", controller.getBlog) 
+
+
+
+// complete the update and delete routes
 
 module.exports =router
