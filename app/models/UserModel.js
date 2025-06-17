@@ -6,6 +6,7 @@ const mongoosePaginate = require("mongoose-paginate");
 
 
 const userSchema = new mongoose.Schema({
+    
     firstName: {
         type: String,
         required: true,
