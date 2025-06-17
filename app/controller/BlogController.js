@@ -42,4 +42,27 @@ exports.getBlog = async (req, res) => {
   return response.success(res, data, statusCode)
 }
 
-// COMPLETE THE UPDATE AND DELETE ENDPOINTS
+exports.updateBlog = async (req, res) => { 
+  const {
+    error,
+    data,
+    statusCode
+  } = await blogService.updateBlog(req.params.blogId, req.body, req) 
+
+  if (error) return response.error(res, error, statusCode);
+
+  return response.success(res, data, statusCode)
+}
+
+exports.deleteBlog = async (req, res) => {
+  const {
+    error,
+    data,
+    statusCode
+  } = await blogService.deleteBlog(req.params.blogId)
+
+  if (error) return response.error(res, error, statusCode);
+
+  return response.success(res, data, statusCode)
+}
+

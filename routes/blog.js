@@ -14,8 +14,8 @@ router.get("/get-all-blogs", controller.getAllBlogs)
 
 router.get("/get-blog/:blogId", controller.getBlog) 
 
+router.put("/update-blog/:blogId", authenticateUser, upload.single("image"), controller.updateBlog)
 
-
-// complete the update and delete routes
+router.delete("/delete-blog/:blogId", authenticateUser, controller.deleteBlog)
 
 module.exports =router

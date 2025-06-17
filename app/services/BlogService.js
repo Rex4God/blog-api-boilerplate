@@ -90,4 +90,71 @@ exports.getBlog = async (blogId) => {
    }
 }
 
-// COMPLETE THE UPDATE AND DELETE ENDPOINTS FUNCTIONS
+  exports.updateBlog = async (blogId, body, req) => {
+   try {
+      const validatorError = await blogValidator.updateBlog(body)
+
+      if (validatorError) {
+         return {
+            error: validatorError,
+            statusCode: StatusCodes.BAD_REQUEST,
+         }
+      }
+
+      const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : undefined;
+
+      const updateData = {
+         blogTitle: body.blogTitle,
+         blogBody: body.blogBody,
+         author: body.author,
+         date: body.date,
+         image: imageUrl
+      }
+
+      const updatedBlog = await Blog.findByIdAndUpdate(blogId, updateData, { new: true })
+
+      if (!updatedBlog) {
+         return {
+            error: "Oops! This blog detail is not found on this platform",
+            statusCode: StatusCodes.NOT_FOUND,
+         }
+      }
+
+      return {
+         data: updatedBlog,
+         statusCode: StatusCodes.OK,
+      }
+
+   } catch (e) {
+      console.log("An unknown error has occurred. Please try again later." + e)
+      return {
+         error: e.message,
+         statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+      }
+   }
+}
+
+exports.deleteBlog = async (blogId) => {
+   try {
+      const blog = await Blog.findByIdAndDelete(blogId)
+
+      if (!blog) {
+         return {
+            error: "Oops! This blog detail is not found on this platform",
+            statusCode: StatusCodes.NOT_FOUND,
+         }
+      }
+
+      return {
+         data: "Blog deleted successfully",
+         statusCode: StatusCodes.OK,
+      }
+
+   } catch (e) {
+      console.log("An unknown error has occurred. Please try again later." + e)
+      return {
+         error: e.message,
+         statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+      }
+   }
+}
